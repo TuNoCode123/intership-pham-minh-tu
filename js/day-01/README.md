@@ -57,18 +57,24 @@ note: rest alway stand at end of parameter
   console.log(first); // 1
   console.log(second); // 2
   console.log(restNumber); // [3, 4, 5]
-  4, Destructuring
-  -array
-  const [a,b]=[1,2,3,4,5]
-  console.log(a,b) //1,2
-  -object
-  const user {
-  name:"fdasfdas",
-  age:12,
-  gender:female
-  }
-  const {name,age}=user;
-  console.log(name,age) //fdasfdas,12
-  5, Export / Import ->>>for module es6+
-  6, Array Functions (map, filter, reduce, ...)
-  7, Primitive(number,string,boolean,undefined,null,symbol) vs Reference(object,array,function)
+
+4, Destructuring
+
+-array
+const [a,b]=[1,2,3,4,5]
+console.log(a,b) //1,2
+
+-object
+const user {
+name:"fdasfdas",
+age:12,
+gender:female
+}
+const {name,age}=user;
+console.log(name,age) //fdasfdas,12
+
+5, Export / Import ->>>for module es6+
+
+6, Array Functions (map, filter, reduce, ...)
+
+7, Primitive(number,string,boolean,undefined,null,symbol) vs Reference(object,array,function)
