@@ -25,6 +25,8 @@ Lệnh Ý nghĩa
 a, Làm sao nhận input từ process.argv?
 
 - process.argv là một mảng (Array) chứa các đối số (arguments) được truyền từ command line khi bạn chạy file Node.
+
+```js
   Vị trí | Ý nghĩa
   0 | Đường dẫn tới node.exe
   1 | Đường dẫn tới file .js bạn đang chạy
@@ -42,40 +44,43 @@ a, Làm sao nhận input từ process.argv?
   'world',
   '123'
   ]
-  --->Từ đây bạn có thể lấy input bằng destructuring [nodePath,AppPath,...restArgs] hoặc sử dụng
-  arr.slice(2)
-  b, Khác biệt giữa stdout(standard output) và stderr(standard error)?
+```
 
-  - stdout là nơi chương trình ghi ra dữ liệu thành công và Redirect bằng >.
-    Ví dụ: in ra kết quả tính toán, danh sách file, thông báo OK...
-    là các hàm console.log, console.info
-  - stderr là nơi chương trình ghi ra dữ liệu lỗi và Redirect bằng 2>.
-    Ví dụ: lỗi file không tồn tại, lỗi permission, lỗi network...
-    là các hàm console.error, console.warn
+--->Từ đây bạn có thể lấy input bằng destructuring [nodePath,AppPath,...restArgs] hoặc sử dụng
+arr.slice(2)
 
-  Cả hai đều là Writable Stream trong Node.js và xuất hiện trên console, nhưng về kỹ thuật thì Bạn có thể redirect chúng riêng biệt.
-  Ví dụ:
+b, Khác biệt giữa stdout(standard output) và stderr(standard error)?
 
-  - Chỉ lưu kết quả (stdout) vào file.
-  - Chỉ lưu lỗi (stderr) vào file khác.
+- stdout là nơi chương trình ghi ra dữ liệu thành công và Redirect bằng >.
+  Ví dụ: in ra kết quả tính toán, danh sách file, thông báo OK...
+  là các hàm console.log, console.info
+- stderr là nơi chương trình ghi ra dữ liệu lỗi và Redirect bằng 2>.
+  Ví dụ: lỗi file không tồn tại, lỗi permission, lỗi network...
+  là các hàm console.error, console.warn
 
-  Ví dụ trong Node.js:
-  // Ghi ra stdout
-  process.stdout.write('This is normal output\n');
+Cả hai đều là Writable Stream trong Node.js và xuất hiện trên console, nhưng về kỹ thuật thì Bạn có thể redirect chúng riêng biệt.
+Ví dụ:
 
-  // Ghi ra stderr
-  process.stderr.write('This is error output\n');
+- Chỉ lưu kết quả (stdout) vào file.
+- Chỉ lưu lỗi (stderr) vào file khác.
 
-  Chạy sẽ thấy:
-  This is normal output
-  This is error output
+Ví dụ trong Node.js:
+// Ghi ra stdout
+process.stdout.write('This is normal output\n');
 
-  Đều hiện ra console. Nhưng nếu bạn redirect:
-  node app.js > out.txt 2> err.txt
-  thì
+// Ghi ra stderr
+process.stderr.write('This is error output\n');
 
-  - > redirect stdout vào out.txt
-  - 2> redirect stderr vào err.txt
+Chạy sẽ thấy:
+This is normal output
+This is error output
+
+Đều hiện ra console. Nhưng nếu bạn redirect:
+node app.js > out.txt 2> err.txt
+thì
+
+- > redirect stdout vào out.txt
+- 2> redirect stderr vào err.txt
 
 c, Cách dùng readline?
 1, stdin là gì?
@@ -106,6 +111,8 @@ process.stdin.on('data', callback) | Đọc từng mẩu dữ liệu
   output: process.stdout // in ra console
   });
   3, Hỏi user bằng question():
+
+  ```js
   //cách 1
   rl.question('Bạn tên gì? ', (answer) => {
   console.log(`Chào bạn, ${answer}!`);
@@ -115,11 +122,9 @@ process.stdin.on('data', callback) | Đọc từng mẩu dữ liệu
   const name = await rl.question('Bạn tên gì? ');
   const age = await rl.question('Bạn bao nhiêu tuổi? ');
   console.log(`Chào ${name}, bạn ${age} tuổi.`);
-  rl.close();
+  rl.close();  //Nhớ rl.close() sau khi xong, nếu không process sẽ bị treo chờ mãi.
   }
-    <!-- Nhớ rl.close() sau khi xong, nếu không process sẽ bị treo chờ mãi. -->
-
-  });
+  ```
 
 d, dependencies vs devDependencies?
 
@@ -228,17 +233,19 @@ b, setTimeout()
 
 Minh họa siêu dễ:
 
-console.log('Start');
+```js
+console.log("Start");
 
 process.nextTick(() => {
-console.log('This is process.nextTick');
+  console.log("This is process.nextTick");
 });
 
 setTimeout(() => {
-console.log('This is setTimeout');
+  console.log("This is setTimeout");
 }, 0);
 
-console.log('End');
+console.log("End");
+```
 
 result:
 
@@ -551,7 +558,8 @@ body += chunk.toString(); // convert Buffer to string
   - Kết thúc phản hồi: res.end() (bắt buộc để hoàn tất phản hồi). nếu không có thì browser phải đợi mãi mãi vì server chưa kết thúc phản hồi.
 
 CRUK TASKS + CHECK TOKEN +AUTOMATE EXPIRE CHECK
-...
+
+```js
 const tasks = [
 {
 id: 1,
@@ -764,4 +772,4 @@ app.listen(PORT, () => {
 console.log(`Server is running at http://localhost:${PORT}`);
 });
 
-...
+```
