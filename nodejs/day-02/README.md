@@ -88,12 +88,15 @@ c, Cách dùng readline?
 - là một Readable Stream(Đọc dữ liệu người dùng hoặc input từ file).
 - Mặc định ở chế độ paused(Dừng đọc) cần .resume() hoặc lắng nghe sự kiện để Bắt đầu đọc.
 
+```js
 Một số thuộc tính & method hay dùng:
 Thuộc tính/method | Ý nghĩa
 process.stdin.resume() | Bắt đầu đọc
 process.stdin.pause() | Dừng đọc
 process.stdin.setEncoding('utf8') | Chuyển dữ liệu thành text (mặc định là buffer)
 process.stdin.on('data', callback) | Đọc từng mẩu dữ liệu
+```
+
 2, readline là gì?
 
 - là bất đồng bộ(Nó đăng ký callback và tiếp tục chạy các code khác).
@@ -103,13 +106,21 @@ process.stdin.on('data', callback) | Đọc từng mẩu dữ liệu
 
   Các bước cơ bản để dùng readline
   1, Import readline:
+
+  ```js
   const readline = require('readline');--->muốn dùng theo kiểu callback(dễ gây ra callback hell)
   const readline = require('readline/promises'); ---> muốn dùng với async/await
+  ```
+
   2, Tạo interface
+
+  ```js
   const rl = readline.createInterface({
-  input: process.stdin, // lấy dữ liệu từ bàn phím
-  output: process.stdout // in ra console
+    input: process.stdin, // lấy dữ liệu từ bàn phím
+    output: process.stdout, // in ra console
   });
+  ```
+
   3, Hỏi user bằng question():
 
   ```js
