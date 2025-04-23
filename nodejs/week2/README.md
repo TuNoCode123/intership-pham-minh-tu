@@ -95,16 +95,16 @@ app.listen(PORT, () => {
 2, Sử dụng morgan để log thông tin các request HTTP với các loại log cơ bản.
 
 - dev: Hiển thị thông tin ngắn gọn, dễ đọc trên console.
-  ![infor](./public/images/creenShots/imageCombine.png)
+  ![infor](./public/images/screenShots/imageCombine.png)
 - combined: Log chi tiết hơn, thông tin về địa chỉ IP, URL, mã phản hồi và thời gian yêu cầu.
-  ![infor](./public/images/creenShots/imageCombine.png)
+  ![infor](./public/images/screenShots/imageCombine.png)
 - tiny: Hiển thị thông tin rất ngắn gọn về status code và thời gian.
-  ![infor](./public/images/creenShots/imageTiny.png)
+  ![infor](./public/images/screenShots/imageTiny.png)
 
 Cấu trúc thư mục chuẩn mvc
 ![infor](./public/images/screenShots/imageFolderStructure.png)
 
 khi không có token
-![infor](./public/images/creenShots/NotAuth.png)
+![infor](./public/images/screenShots/NotAuth.png)
 khi vào router không được định nghĩa
 ![infor](./public/images/screenShots/NotFoundUrl.png)
