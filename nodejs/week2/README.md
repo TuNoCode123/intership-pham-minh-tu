@@ -97,9 +97,9 @@ app.listen(PORT, () => {
 - dev: Hiển thị thông tin ngắn gọn, dễ đọc trên console.
   ![infor](./public/images/creenShots/imageCombine.png)
 - combined: Log chi tiết hơn, thông tin về địa chỉ IP, URL, mã phản hồi và thời gian yêu cầu.
-  ![infor](./public/mages/creenShots/imageCombine.png)
+  ![infor](./public/images/creenShots/imageCombine.png)
 - tiny: Hiển thị thông tin rất ngắn gọn về status code và thời gian.
-  ![infor](./public/mages/creenShots/imageTiny.png)
+  ![infor](./public/images/creenShots/imageTiny.png)
 
 Cấu trúc thư mục chuẩn mvc
 ![infor](./public/images/screenShots/imageFolderStructure.png)
