@@ -20,7 +20,6 @@ export const errorHandler = (err, req, res, next) => {
     // }
 
     const statusCode = err.status || 500;
-    console.log(err.status);
     let message = err.message || "Internal Server Error";
 
     // Nếu message là mảng thì trả về mảng luôn
@@ -30,11 +29,10 @@ export const errorHandler = (err, req, res, next) => {
         EM: message,
       });
     }
-
     // Nếu message là string
     res.status(statusCode).json({
       EC: 1,
-      EM: message,
+      EM: `${message}`,
     });
   } catch (error) {
     console.error("Lỗi ghi log:", error); // Ghi lỗi vào console nếu không thể ghi vào file

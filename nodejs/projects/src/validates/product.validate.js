@@ -14,4 +14,23 @@ const productSchema = z.object({
     .max(255, "Category must be at most 255 characters")
     .optional(),
 });
-export { productSchema };
+
+const correctProductSchema = z.object({
+  id: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 1, {
+    message: "id must be a positive number",
+  }),
+
+  name: z.string().max(255, "Name must be at most 255 characters").optional(),
+
+  price: z.number().positive("Price must be a positive number").optional(),
+
+  stock: z.number().int().min(0, "Stock must be >= 0").optional(),
+
+  description: z.string().optional(),
+
+  category: z
+    .string()
+    .max(255, "Category must be at most 255 characters")
+    .optional(),
+});
+export { productSchema, correctProductSchema };

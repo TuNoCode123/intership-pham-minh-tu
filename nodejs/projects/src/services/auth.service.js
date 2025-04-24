@@ -47,7 +47,7 @@ class AuthService {
       if (checkUserByEmail.DT.length <= 0)
         throw new HttpError(400, "email or password not correct");
       const [user] = checkUserByEmail.DT;
-      const { password: Pass, name, role, revork, ...rest } = user;
+      const { password: Pass, name, role, revork, id, ...rest } = user;
 
       //check revork
       if (revork == true) throw new HttpError(403, "you banned");
@@ -57,7 +57,7 @@ class AuthService {
       if (!isMatch) {
         throw new HttpError(400, "email or password not correct");
       }
-      const accessToken = signToken({ name, email, role }, "1h");
+      const accessToken = signToken({ name, email, role, id }, "1h");
       return {
         ST: 200,
         EC: 0,

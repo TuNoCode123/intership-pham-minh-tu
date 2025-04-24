@@ -23,4 +23,15 @@ const productQuerySchema = z.object({
 
   category: z.string().trim().optional().default(""),
 });
-export { productQuerySchema };
+const idSchema = z.object({
+  id: z.number().refine((val) => !isNaN(val) && val > 0, {
+    message: "Id must be a positive number",
+  }),
+});
+const schemaUpdateState = z.object({
+  id: z.number().refine((val) => !isNaN(val) && val > 0, {
+    message: "Id must be a positive number",
+  }),
+  status: z.enum(["pending", "paid", "shipped", "cancelled"]),
+});
+export { productQuerySchema, idSchema, schemaUpdateState };

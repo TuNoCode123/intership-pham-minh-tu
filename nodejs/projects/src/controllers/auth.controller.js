@@ -2,6 +2,7 @@ import authService from "../services/auth.service.js";
 class AuthController {
   async register(req, res, next) {
     try {
+      console.log(req.data);
       const response = await authService.register(req.data);
       const { ST, ...restResultFromService } = response;
       return res.status(ST).json(restResultFromService);

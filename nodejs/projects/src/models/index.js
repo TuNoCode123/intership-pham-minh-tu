@@ -1,3 +1,5 @@
+import { createIndexFulltextSearch } from "./product.model.js";
+
 async function setupDatabase() {
   const models = [
     import("./user.model.js"),
@@ -18,6 +20,12 @@ async function setupDatabase() {
         );
       }
     }
+    // await createIndexFulltextSearch("products", [
+    //   "name",
+    //   "description",
+    //   "category",
+    // ]);
+
     console.log("All models have been created successfully.");
   } catch (error) {
     console.error("Error creating models:", error.message);

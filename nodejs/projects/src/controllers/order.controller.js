@@ -1,9 +1,9 @@
-import productService from "../services/product.service.js";
+import orderService from "../services/order.service.js";
 
-class ProductController {
-  async addProduct(req, res, next) {
+class OrderController {
+  async createBulkOrders(req, res, next) {
     try {
-      const response = await productService.addProduct(req.data);
+      const response = await orderService.addOrder(req.data);
       const { ST, ...restResultFromService } = response;
       return res.status(ST).json(restResultFromService);
     } catch (error) {
@@ -11,9 +11,10 @@ class ProductController {
       next(error);
     }
   }
-  async findProducts(req, res, next) {
+  async getOrdersOfUser(req, res, next) {
     try {
-      const response = await productService.findProducts(req.data);
+      //   console.log(req.data);
+      const response = await orderService.getOrdersOfUser(req.data);
       const { ST, ...restResultFromService } = response;
       return res.status(ST).json(restResultFromService);
     } catch (error) {
@@ -21,10 +22,9 @@ class ProductController {
       next(error);
     }
   }
-  async deleteProductbyId(req, res, next) {
+  async getAllOrders(req, res, next) {
     try {
-      const { id } = req.data;
-      const response = await productService.deleteProductById(id);
+      const response = await orderService.getAllOrders(req.query);
       const { ST, ...restResultFromService } = response;
       return res.status(ST).json(restResultFromService);
     } catch (error) {
@@ -32,9 +32,9 @@ class ProductController {
       next(error);
     }
   }
-  async correctProduct(req, res, next) {
+  async updateStatus(req, res, next) {
     try {
-      const response = await productService.correctProduct(req.data);
+      const response = await orderService.updateStateOrder(req.data);
       const { ST, ...restResultFromService } = response;
       return res.status(ST).json(restResultFromService);
     } catch (error) {
@@ -43,4 +43,4 @@ class ProductController {
     }
   }
 }
-export default new ProductController();
+export default new OrderController();

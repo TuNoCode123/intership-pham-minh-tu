@@ -1,6 +1,7 @@
 import pool from "../configs/configMysql.js";
 import "dotenv/config";
 import { hashPassWord } from "../helpers/bcryptPass.js";
+import HttpError from "../interfaces/error.js";
 
 async function userModal() {
   try {
@@ -54,6 +55,21 @@ export const insertUser = async ({ password, ...user }) => {
     return {
       EC: 0,
       DT: affectedRows,
+    };
+  } catch (error) {
+    return {
+      EC: 1,
+      EM: error.message,
+    };
+  }
+};
+export const getUserById = async (id) => {
+  try {
+    const [rs] = await pool.query("SELECT * FROM users where id=?", [id]);
+    if (rs.length == 0) throw new HttpError(404, "user not existed");
+    return {
+      EC: 0,
+      DT: rs,
     };
   } catch (error) {
     return {
