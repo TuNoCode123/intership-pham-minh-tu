@@ -76,17 +76,21 @@ const useCart = () => {
 // ...existing code...
 
 ## Demo Screenshots
+```
 
 ### Product Listing Page
+
 ## Product Listing Page
-![Product Grid Layout](./assets/product-listing.png)
-*Product grid layout with lazy loading images and add to cart functionality*
+
+![Product Grid Layout](assets/product-listing.png)
+_Product grid layout with lazy loading images and add to cart functionality_
 
 ## Shopping Cart
-![Shopping Cart](./assets/shopping-cart.png)
-*Cart page showing selected items, quantity controls, and total calculation*
+
+![Shopping Cart](assets/shopping-cart.png)
+_Cart page showing selected items, quantity controls, and total calculation_
 
 ## Add Product Form
-![Add Product Modal](./assets/add-product.png)
-*Modal form for adding new products with validation*
-```
+
+![Add Product Modal](assets/add-product.png)
+_Modal form for adding new products with validation_
