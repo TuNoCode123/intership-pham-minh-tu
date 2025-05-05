@@ -16,9 +16,13 @@ const productSchema = z.object({
 });
 
 const correctProductSchema = z.object({
-  id: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 1, {
-    message: "id must be a positive number",
-  }),
+  id: z
+    .number()
+    .int()
+    .positive()
+    .refine((val) => !isNaN(Number(val)) && Number(val) >= 1, {
+      message: "id must be a positive number",
+    }),
 
   name: z.string().max(255, "Name must be at most 255 characters").optional(),
 

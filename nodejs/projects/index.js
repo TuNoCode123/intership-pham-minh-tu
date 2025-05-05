@@ -6,8 +6,17 @@ import setupDatabase from "./src/models/index.js";
 import morgan from "morgan";
 const app = express();
 const PORT = 8000;
+import cors from "cors";
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true, // nếu dùng cookie hoặc header authentication
+  })
+);
 // middleware morgan
 app.use(morgan("dev"));
+
 // Tạo một stream để ghi log vào file
 const logStream = fs.createWriteStream("access.log", {
   flags: "a",

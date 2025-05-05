@@ -34,6 +34,13 @@ export const addProductModal = async (product) => {
       ST: 200,
       EC: 0,
       EM: "ADD PRODUCT SUCCESS",
+      DT: {
+        name,
+        price,
+        stock,
+        description,
+        category,
+      },
     };
   } catch (error) {
     return {

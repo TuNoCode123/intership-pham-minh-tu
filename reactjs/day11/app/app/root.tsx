@@ -9,6 +9,11 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { CartProvider } from "./totalDay16/contexts/cartContext";
+import { CartProviderDay17 } from "./totalDay17/contexts/cartContext";
+import { ProductProvider } from "./totalDay17/contexts/productContext";
+import { ProductMiniProjectProvider } from "./miniProject/contexts/productContext";
+import CartMiniProjectProvider from "./miniProject/contexts/cartContext";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -33,7 +38,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        {/* Bọc toàn bộ nội dung bên trong ThemeProvider và các Context Providers */}
+
+        <CartProvider>
+          <CartProviderDay17>
+            <ProductProvider>
+              <ProductMiniProjectProvider>
+                <CartMiniProjectProvider> {children}</CartMiniProjectProvider>
+              </ProductMiniProjectProvider>
+            </ProductProvider>
+          </CartProviderDay17>
+        </CartProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

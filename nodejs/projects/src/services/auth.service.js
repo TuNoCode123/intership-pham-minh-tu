@@ -18,7 +18,7 @@ class AuthService {
         ...rest,
       });
       if (affectedRows.EC == 0) {
-        const accessToken = signToken({ name, email, role }, "1h");
+        const accessToken = signToken({ name, email, role }, "10h");
         return {
           ST: 200,
           EC: 0,
@@ -57,7 +57,7 @@ class AuthService {
       if (!isMatch) {
         throw new HttpError(400, "email or password not correct");
       }
-      const accessToken = signToken({ name, email, role, id }, "1h");
+      const accessToken = signToken({ name, email, role, id }, "10h");
       return {
         ST: 200,
         EC: 0,

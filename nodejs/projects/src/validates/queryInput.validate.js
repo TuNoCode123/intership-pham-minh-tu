@@ -6,7 +6,7 @@ const productQuerySchema = z.object({
   page: z
     .string()
     .optional()
-    .transform((val) => (val ? parseInt(val, offset) : offset))
+    .transform((val) => (val ? parseInt(val) : offset))
     .refine((val) => !isNaN(val) && val >= 0, {
       message: "Page must be a positive number",
     }),

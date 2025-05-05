@@ -72,11 +72,15 @@ const pagination = async (offset, limit, searchQuery) => {
       const formattedSql = pool.format(sql, [limit, offset]);
       res = await pool.query(formattedSql);
     }
-
+    const [rows] = await pool.execute("SELECT COUNT(*) AS total FROM products");
+    console.log("Total orders:", rows[0].total);
     return {
       EC: 0,
       EM: "GET SUCCESS",
-      DATA: res[0],
+      DT: {
+        total: rows[0].total,
+        data: res[0],
+      },
     };
   } catch (error) {
     console.log(error);

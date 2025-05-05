@@ -29,31 +29,12 @@ const validateRequest = (schema) => {
           mergeIfNotEmpty(body);
           mergeIfNotEmpty(query);
           mergeIfNotEmpty(params);
-          //   mergeIfNotEmpty(query);
-          //   if (!isEmpty(body)) {
-          //     input = { ...input, ...body };
-          //   }
-          //   if (!isEmpty(query)) {
-          //     input = { ...input, ...query };
-          //   }
-          //   if (!isEmpty(params)) {
-          //     input = { ...input, ...params };
-          //   }
         }
       }
-      if (!input || isEmpty(input)) {
-        return next(new HttpError(400, "missing data required"));
-      }
-      // Validation bất đồng bộ (chứa .refine async)
-
-      //   console.log("neathc");
-      //   const result = schema.safeParse(input);
-      // Validate body
-
-      //   if (!result.success) {
-      //     const errors = customErrorZod(result.error.errors);
-      //     return next(new HttpError(400, errors));
-      //   }
+      // if (!input || isEmpty(input)) {
+      //   return next(new HttpError(400, "missing data required"));
+      // }
+      console.log(input);
       let result = await schema.parseAsync(input); // Chờ validation hoàn tất
       req.data = result;
       next();
