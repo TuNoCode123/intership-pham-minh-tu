@@ -5,7 +5,7 @@ import HttpError from "../interfaces/error.js";
 export const authorizeRole = (roles) => {
   return async (req, res, next) => {
     const user = req.user;
-    console.log(user);
+    console.log("-------------->", user);
     if (!user) {
       return res.status(401).json({ EC: 1, EM: "Not login" });
     }

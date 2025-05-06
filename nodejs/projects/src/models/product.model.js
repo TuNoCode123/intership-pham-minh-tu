@@ -65,22 +65,50 @@ export const createIndexFulltextSearch = async (table, fields) => {
   }
 };
 export const deleteProductById = async (id) => {
+  const connection = await pool.getConnection();
   try {
+    await connection.beginTransaction();
+
+    const queryOrderItems = `DELETE FROM order_items WHERE product_id = ?`;
+    const dependeciesItems = [id];
+    const [result] = await connection.execute(
+      queryOrderItems,
+      dependeciesItems
+    );
+    const selectQuery = `SELECT * FROM order_items WHERE product_id = ?`;
+    const [rows] = await connection.execute(selectQuery, [id]);
+
+    for (let item of rows) {
+      const { order_id } = item;
+
+      const queryOrder = `DELETE FROM orders WHERE id = ?`;
+      const dependeciesOrder = [order_id];
+      await connection.execute(queryOrder, dependeciesOrder);
+    }
+
+    const { affectedRows } = result;
+    if (affectedRows <= 0) throw new HttpError(500, "Delete Failed");
     // DELETE FROM users WHERE id = 999;
     const query = `DELETE FROM products WHERE id = ?`;
     const dependecies = [id];
-    await pool.execute(query, dependecies);
+    await connection.execute(query, dependecies);
+
+    await connection.commit();
+
     return {
       ST: 200,
       EC: 0,
       EM: "DELETE SUCCESS",
     };
   } catch (error) {
+    await connection.rollback();
     return {
       ST: error.message | 400,
       EC: 1,
       EM: error.message,
     };
+  } finally {
+    connection.release();
   }
 };
 export const findProductById = async (productId) => {
@@ -123,7 +151,6 @@ export const updateProduct = async ({
   category,
 }) => {
   try {
-    console.log(name, price, stock, description, category);
     const query = `UPDATE products 
     SET name = ?, price = ?, description = ? , stock= ? , category= ?
     WHERE id = ?`;

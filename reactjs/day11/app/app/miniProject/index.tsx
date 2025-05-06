@@ -4,6 +4,7 @@ import type { TabsProps } from "antd";
 import AppMain from "./app";
 import Cart from "./components/carts/cart";
 import { useSearchParams } from "react-router";
+import ManagerProduct from "./components/products/manager_product";
 
 const items: TabsProps["items"] = [
   {
@@ -15,6 +16,11 @@ const items: TabsProps["items"] = [
     key: "2",
     label: "Cart",
     children: <Cart />,
+  },
+  {
+    key: "3",
+    label: "Manager Product",
+    children: <ManagerProduct />,
   },
 ];
 

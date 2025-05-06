@@ -22,7 +22,7 @@ export interface ICart {
   image?: string;
   quantity: number;
   title?: string;
-  totalPrice: Number;
+  totalPrice: number;
 }
 
 // Nếu cần type TypeScript:
