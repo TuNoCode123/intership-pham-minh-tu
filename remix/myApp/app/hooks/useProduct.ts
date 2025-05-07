@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { toast } from "react-toastify";
+import { api } from "~/constants/api";
 import { ActionTypes } from "~/constants/enum";
 import { ProductContext } from "~/contexts/product_context";
 import { IProduct } from "~/interfaces/product";
@@ -32,9 +33,9 @@ const useProduct = () => {
     try {
       let url;
       if (type === ActionTypes.ADD_ITEM) {
-        url = "http://localhost:8000/api/v1/admin/products";
+        url = api.addProduct;
       } else {
-        url = `http://localhost:8000/api/v1/admin/products/${id}`;
+        url = api.updateProduct(id);
       }
 
       const body = {
@@ -52,7 +53,6 @@ const useProduct = () => {
         if (type === ActionTypes.ADD_ITEM) {
           dispatch({ type: ActionTypes.ADD_ITEM, payload: DT });
         } else if (type === ActionTypes.UPDATE_ITEM) {
-          console.log("---------->", data);
           dispatch({
             type: ActionTypes.UPDATE_ITEM,
             payload: { ...data, id },
@@ -78,7 +78,7 @@ const useProduct = () => {
   };
   const removeproduct = async (id: number) => {
     try {
-      const url = `http://localhost:8000/api/v1/admin/products/${id}`;
+      const url = api.removeProduct(id);
       const body = {
         method: "DELETE",
         headers: {
