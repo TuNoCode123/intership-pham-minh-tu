@@ -1,0 +1,3 @@
+export const api = {
+  getAllProduct: `http://localhost:8000/api/v1/products`,
+};

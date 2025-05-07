@@ -86,8 +86,8 @@ export const deleteProductById = async (id) => {
       await connection.execute(queryOrder, dependeciesOrder);
     }
 
-    const { affectedRows } = result;
-    if (affectedRows <= 0) throw new HttpError(500, "Delete Failed");
+    // const { affectedRows } = result;
+    // if (affectedRows <= 0) throw new HttpError(500, "Delete Failed");
     // DELETE FROM users WHERE id = 999;
     const query = `DELETE FROM products WHERE id = ?`;
     const dependecies = [id];

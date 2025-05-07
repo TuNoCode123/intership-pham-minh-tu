@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* html,
+body {
+  @apply bg-white dark:bg-gray-950;
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+} */
+/* CustomDataTable.css */
+.Polaris-DataTable__Cell {
+  font-size: 16px; /* Tăng kích thước chữ */
+  line-height: 24px; /* Tăng khoảng cách dòng */
+  padding: 12px 16px; /* Tăng padding */
+}
+
+.Polaris-DataTable__Heading {
+  font-size: 18px; /* Tăng kích thước chữ cho tiêu đề */
+  padding: 12px 16px; /* Tăng padding */
+}
+
+.Polaris-DataTable__Row:nth-child(even) {
+  background-color: #f9fafb; /* Màu nền xen kẽ */
+}
+.Polaris-IndexTable__TableCell {
+  font-size: 16px; /* Tăng kích thước chữ cho ô */
+  line-height: 24px; /* Tăng khoảng cách dòng */
+  padding: 12px 16px; /* Tăng padding */
+  min-width: 120px; /* Đặt chiều rộng tối thiểu */
+}
+
+.Polaris-IndexTable__TableHeading {
+  font-size: 18px; /* Tăng kích thước chữ cho tiêu đề */
+  padding: 12px 16px; /* Tăng padding */
+  font-weight: 600; /* Làm chữ tiêu đề đậm hơn */
+}
+
+.Polaris-IndexTable__TableRow:nth-child(even) {
+  background-color: #f9fafb; /* Màu nền xen kẽ cho hàng chẵn */
+}
+
+.Polaris-IndexTable__TableRow {
+  border-bottom: 1px solid #dfe3e8; /* Thêm viền dưới cho hàng */
+}
+
+@media (max-width: 768px) {
+  .Polaris-IndexTable__TableCell {
+    font-size: 14px; /* Giảm kích thước chữ trên màn hình nhỏ */
+    padding: 8px; /* Giảm padding */
+  }
+
+  .Polaris-IndexTable__TableHeading {
+    font-size: 16px; /* Giảm kích thước tiêu đề */
+    padding: 8px;
+  }
+}
+
+/* Đổi màu nền số trang đang được chọn */
+.Toastify__toast {
+  font-size: 1.25rem; /* tăng cỡ chữ */
+  padding: 20px; /* tăng khoảng cách */
+  min-height: 80px; /* cao hơn */
+}
