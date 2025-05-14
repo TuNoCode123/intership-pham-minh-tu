@@ -1,0 +1,54 @@
+{% assign api = block.settings.api_endpoint %}
+{% if api != blank %}
+<div class="cart__footer-wrapper">
+  <div class="cart__footer">
+    <div class="cart__footer-content">
+      <h2>Inventory Data</h2>
+      <p>API Endpoint: {{ api }}</p>
+      <p>Data:</p>
+
+      {% if block.settings.show_data %}
+        <pre id="inventory-data" style="color: {{ block.settings.color }}"></pre>
+        <p>Data đang lên.</p>
+        <script>
+          fetch('{{ api }}')
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById('inventory-data').textContent = JSON.stringify(data.length);
+            })
+            .catch(error => console.error('Error fetching inventory data:', error));
+        </script>
+      {% else %}
+        <p>Data đang bị ẩn.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Inventory Data with API",
+  "target": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_data",
+      "label": "Hiển thị data?",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "api_endpoint",
+      "label": "Custom API Endpoint",
+      "default": "https://jsonplaceholder.typicode.com/posts"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Color",
+      "default": "#000000"
+    }
+  ]
+}
+{% endschema %}
