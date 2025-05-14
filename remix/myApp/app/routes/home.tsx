@@ -17,8 +17,8 @@ import { api } from "~/constants/api";
 import useProduct from "~/hooks/useProduct";
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "My App" },
+    { name: "description", content: "Welcome to My App!" },
   ];
 };
 export const loader = async ({ request }: LoaderFunctionArgs) => {

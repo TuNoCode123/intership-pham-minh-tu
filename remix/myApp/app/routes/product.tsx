@@ -18,6 +18,14 @@ import FormProduct from "~/components/products/form/form_add_product";
 import { set } from "lodash";
 import { ActionTypes } from "~/constants/enum";
 import { toast } from "react-toastify";
+import { MetaFunction } from "@remix-run/node";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Products" },
+    { name: "description", content: "Welcome to Products!" },
+  ];
+};
 function Product() {
   const fetcher = useFetcher();
   const [page, setPage] = useState(1);

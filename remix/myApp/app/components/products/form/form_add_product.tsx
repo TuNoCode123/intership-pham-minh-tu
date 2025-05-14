@@ -40,6 +40,7 @@ const FormProduct = ({
   }, []);
 
   const onSubmit = async (data: IProduct) => {
+    console.log("data", type);
     const res = await AddOrUpdateProductFromType(
       { ...data },
       type,

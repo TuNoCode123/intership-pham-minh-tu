@@ -6,7 +6,7 @@ import type { IProduct } from "../interface";
 import { message } from "antd";
 
 const useProduct = () => {
-  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4xIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNzQ2NTAyMzIxLCJleHAiOjE3NDY1MzgzMjF9.oFwMPxUCKDAmu9R8nQrOl8ldsKGTPVInhvPZOgE68qk`;
+  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4xIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNzQ2NjcwOTEyLCJleHAiOjE3NDY3MDY5MTJ9.7te_vyAWLJ4TfuVLKVZA5AuGXlaE8fpnhnQWA4mCLkc`;
   const context = useContext(ProductMiniProjectContext);
   if (!context)
     throw new Error("useProduct must be used within an ProductProvider");

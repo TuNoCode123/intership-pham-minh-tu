@@ -46,6 +46,8 @@ export const cartReducer = (state: State, action: Action): State => {
       const index = cloneArr.findIndex((item) => item.id === action.payload.id);
       if (index >= 0) {
         cloneArr[index].quantity += action.payload.quantity;
+        cloneArr[index].totalPrice =
+          cloneArr[index].quantity * action.payload.price;
         return {
           ...state,
           cart: cloneArr,
@@ -104,10 +106,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [first, setFirst] = useState(false);
   const totalPrice = useMemo(
     () =>
-      state.cart.reduce((total, item) => total + item.price * item.quantity, 0),
+      state.cart.reduce(
+        (total, item) => total + +item.price * item.quantity,
+        0
+      ),
     [state.cart]
   );
   useEffect(() => {
+    console.log("state.cart", state.cart);
     if (first) localStorage.setItem("cart", JSON.stringify(state.cart));
   }, [state.cart]);
   useEffect(() => {

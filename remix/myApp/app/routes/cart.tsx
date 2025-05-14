@@ -1,3 +1,4 @@
+import { MetaFunction } from "@remix-run/node";
 import { json, Link } from "@remix-run/react";
 import {
   IndexTable,
@@ -16,6 +17,13 @@ import { toast } from "react-toastify";
 import QuantityCell from "~/components/products/QuantityCell";
 import { ActionTypes } from "~/constants/enum";
 import useCart from "~/hooks/useCart";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Cart" },
+    { name: "description", content: "Welcome to Cart!" },
+  ];
+};
 export const loader = async () => {
   const data = {
     message: "Dữ liệu từ loader của index",

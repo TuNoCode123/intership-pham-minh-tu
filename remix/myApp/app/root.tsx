@@ -12,7 +12,6 @@ import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
 import "./tailwind.css";
 import { ProductProvider } from "./contexts/product_context";
-import { api } from "./constants/api";
 import { CartProvider } from "./contexts/cart_context";
 import { ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

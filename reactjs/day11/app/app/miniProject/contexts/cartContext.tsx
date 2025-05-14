@@ -30,6 +30,8 @@ type Action =
 function reducerCart(state: State, action: Action): State {
   switch (action.type) {
     case ActionTypes.LOADING_ITEM:
+      if (!action.payload) return { ...state, cart: [] };
+      if (action.payload.length === 0) return { ...state, cart: [] };
       return {
         ...state,
         cart: [...action.payload],

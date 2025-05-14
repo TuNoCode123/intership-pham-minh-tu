@@ -39,6 +39,7 @@ type Action =
 function reducerProduct(state: State, action: Action): State {
   switch (action.type) {
     case ActionTypes.LOADING_ITEM:
+      if (action.payload.length === 0) return { ...state, product: [] };
       return {
         ...state,
         product: [...action.payload],

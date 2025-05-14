@@ -19,7 +19,7 @@ const useProduct = () => {
     setSelectedProduct,
   } = context;
   const { products } = state;
-  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4xIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNzQ2NTkwMzgyLCJleHAiOjE3NDY2MjYzODJ9.8C0iFHRY071OGOkm0ooofD3WMUZKGt9G8WBASzoyCMU`;
+  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4xIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpZCI6MiwiaWF0IjoxNzQ2NjcwOTEyLCJleHAiOjE3NDY3MDY5MTJ9.7te_vyAWLJ4TfuVLKVZA5AuGXlaE8fpnhnQWA4mCLkc`;
   const loadingDataToContext = (p: IProduct[]) =>
     dispatch({ type: ActionTypes.LOADING_DATA, payload: p });
   const AddOrUpdateProductFromType = async (
@@ -27,17 +27,20 @@ const useProduct = () => {
     type: string,
     id: number | undefined
   ) => {
-    if (!id) {
-      return;
-    }
+    // console.log("-----------------data", type);
+    // if (!id) {
+    //   return;
+    // }
     try {
       let url;
       if (type === ActionTypes.ADD_ITEM) {
+        console.log("add product", data);
         url = api.addProduct;
       } else {
+        if (!id) return;
         url = api.updateProduct(id);
       }
-
+      console.log(url);
       const body = {
         method: type === ActionTypes.ADD_ITEM ? "POST" : "PUT",
         headers: {
@@ -76,6 +79,7 @@ const useProduct = () => {
       };
     }
   };
+
   const removeproduct = async (id: number) => {
     try {
       const url = api.removeProduct(id);
