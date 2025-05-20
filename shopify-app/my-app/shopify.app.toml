@@ -3,7 +3,7 @@
 client_id = "e4e0ff10ec227ec96c9afe1fb60bf513"
 name = "my-app"
 handle = "my-app-1686"
-application_url = "https://zoo-taken-held-somewhat.trycloudflare.com"
+application_url = "https://follow-needle-scottish-temple.trycloudflare.com"
 embedded = true
 
 [build]
@@ -19,9 +19,9 @@ scopes = "read_customers,write_customers,write_products,read_orders,write_orders
 
 [auth]
 redirect_urls = [
-  "https://zoo-taken-held-somewhat.trycloudflare.com/auth/callback",
-  "https://zoo-taken-held-somewhat.trycloudflare.com/auth/shopify/callback",
-  "https://zoo-taken-held-somewhat.trycloudflare.com/api/auth/callback"
+  "https://follow-needle-scottish-temple.trycloudflare.com/auth/callback",
+  "https://follow-needle-scottish-temple.trycloudflare.com/auth/shopify/callback",
+  "https://follow-needle-scottish-temple.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]
