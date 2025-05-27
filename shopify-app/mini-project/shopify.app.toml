@@ -1,0 +1,36 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "2f969c651b8b2a3e24c359acdba31026"
+name = "MiniProject"
+handle = "miniproject"
+application_url = "https://containing-discusses-activists-berry.trycloudflare.com"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
+
+[webhooks]
+api_version = "2025-04"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products,write_inventory,read_locations,read_orders,read_draft_orders"
+
+[auth]
+redirect_urls = [
+  "https://containing-discusses-activists-berry.trycloudflare.com/auth/callback",
+  "https://containing-discusses-activists-berry.trycloudflare.com/auth/shopify/callback",
+  "https://containing-discusses-activists-berry.trycloudflare.com/api/auth/callback"
+]
+
+[pos]
+embedded = false
