@@ -26,12 +26,13 @@ interface INodeProduct {
   };
   description: string;
 }
-interface InodeMedia {
+export interface InodeMedia {
   mediaContentType: "IMAGE" | "EXTERNAL_VIDEO";
   alt: string;
   image: {
     url: string;
   };
+  id: string;
 }
 export interface IselectOption {
   name: string;
@@ -78,10 +79,10 @@ export interface InodeMediaVariant {
   node: InodeVariant;
   currencyCode?: string;
 }
-interface IedgeMedia {
+export interface IedgeMedia {
   node: InodeMedia;
 }
-interface Imedia {
+export interface Imedia {
   edges: IedgeMedia[];
 }
 interface Icategory {

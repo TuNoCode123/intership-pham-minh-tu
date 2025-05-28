@@ -1,4 +1,10 @@
-import { InodeMediaVariant, Iproduct, IselectOption } from "interfaces/product";
+import {
+  IedgeMedia,
+  InodeMedia,
+  InodeMediaVariant,
+  Iproduct,
+  IselectOption,
+} from "interfaces/product";
 import _ from "lodash";
 import {
   createContext,
@@ -6,6 +12,7 @@ import {
   useState,
   ReactNode,
   useCallback,
+  useEffect,
 } from "react";
 
 type UserContextType = {
@@ -25,6 +32,16 @@ type UserContextType = {
   onclickChangeVariant: (key: string, value: string) => void;
   isClickChangeVariant: boolean;
   setIsClickChangeVariant: (v: boolean) => void;
+  selectedImage: IedgeMedia | undefined;
+  setSelectedImage: (v: IedgeMedia | undefined) => void;
+  handleSetSelectedImage: (v: IedgeMedia) => void;
+  notFoundVariant: boolean;
+  setNotFoundVariant: (v: boolean) => void;
+  preListVariants: Record<string, any>;
+  setPreListVariants: (v: Record<string, any>) => void;
+  handleClickConvertPrevious: (v: Record<string, any>) => void;
+  currentSlide: number;
+  setCurrentSlide: (v: number) => void;
 };
 export interface Iselect {
   label: string;
@@ -41,7 +58,12 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [options, setOptions] = useState<Iselect[]>([]);
   const [selected, setSelected] = useState("");
   const [listVariants, setListVariants] = useState<Record<string, any>>({});
+  const [preListVariants, setPreListVariants] = useState<Record<string, any>>(
+    {},
+  );
   const [isClickChangeVariant, setIsClickChangeVariant] = useState(false);
+  const [notFoundVariant, setNotFoundVariant] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<IedgeMedia>();
   const handleSelectChange = useCallback(
     (value: string) => {
       const cloneArr = _.cloneDeep(pickedVariant) as InodeMediaVariant;
@@ -67,6 +89,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     },
     [pickedVariant],
   );
+  const [currentSlide, setCurrentSlide] = useState(0);
   const handleSetOption = (v: Iselect[]) => {
     setOptions([...v]);
   };
@@ -76,14 +99,21 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const closeModalUpdateProduct = () => {
     setModalOpen(false);
   };
-
+  const handleSetSelectedImage = useCallback((v: IedgeMedia) => {
+    setSelectedImage(v);
+  }, []);
+  const handleClickConvertPrevious = (v: Record<string, any>) => {
+    setListVariants(v);
+  };
   const onclickChangeVariant = (key: string, value: string) => {
+    setPreListVariants(listVariants);
     setListVariants((prev) => ({
       ...prev,
       [key]: value,
     }));
     setIsClickChangeVariant(!isClickChangeVariant);
   };
+
   return (
     <ProductContext.Provider
       value={{
@@ -103,6 +133,16 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
         onclickChangeVariant,
         isClickChangeVariant,
         setIsClickChangeVariant,
+        selectedImage,
+        setSelectedImage,
+        handleSetSelectedImage,
+        notFoundVariant,
+        setNotFoundVariant,
+        preListVariants,
+        setPreListVariants,
+        handleClickConvertPrevious,
+        currentSlide,
+        setCurrentSlide,
       }}
     >
       {children}

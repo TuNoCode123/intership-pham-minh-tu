@@ -3,7 +3,7 @@
 client_id = "2f969c651b8b2a3e24c359acdba31026"
 name = "MiniProject"
 handle = "miniproject"
-application_url = "https://containing-discusses-activists-berry.trycloudflare.com"
+application_url = "https://intro-magic-habits-make.trycloudflare.com"
 embedded = true
 
 [build]
@@ -27,9 +27,9 @@ scopes = "write_products,write_inventory,read_locations,read_orders,read_draft_o
 
 [auth]
 redirect_urls = [
-  "https://containing-discusses-activists-berry.trycloudflare.com/auth/callback",
-  "https://containing-discusses-activists-berry.trycloudflare.com/auth/shopify/callback",
-  "https://containing-discusses-activists-berry.trycloudflare.com/api/auth/callback"
+  "https://intro-magic-habits-make.trycloudflare.com/auth/callback",
+  "https://intro-magic-habits-make.trycloudflare.com/auth/shopify/callback",
+  "https://intro-magic-habits-make.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]

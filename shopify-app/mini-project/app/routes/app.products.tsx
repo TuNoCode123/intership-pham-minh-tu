@@ -146,7 +146,10 @@ export default function DataTableProduct() {
     searchParams.set(ENUM_PARAMS.BEFORE, cursor);
     setSearchParams(searchParams);
   };
-  const { setListVariants } = useProduct();
+  const { setListVariants, setCurrentSlide } = useProduct();
+  useEffect(() => {
+    setCurrentSlide(0);
+  }, []);
   // a;
   // const { pageInfor, handleOnNext } = usePagination(products.pageInfo);
   const options: IOption[] = [];
@@ -201,7 +204,7 @@ export default function DataTableProduct() {
     const price = `${priceRangeV2.minVariantPrice.amount} - ${priceRangeV2.maxVariantPrice.amount} ${priceRangeV2.minVariantPrice.currencyCode} `;
     const titleLink = (
       <Link removeUnderline url={`/app/product/${btoa(id)}`} key={id}>
-        {title}
+        {title.length > 50 ? title.slice(0, 50) + "..." : title}
       </Link>
     );
     const trunscatedDescription =

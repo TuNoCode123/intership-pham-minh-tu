@@ -17,3 +17,6 @@ export enum VARIANTS {
   DEFAULT_TITLE = "Default Title",
   ERROR_LOCALE_VALIDATE = "ERROR_LOCALE_VALIDATE",
 }
+export enum MODAL {
+  MY_MODAL_NOT_FOUND = "MY_MODAL_NOT_FOUND",
+}

@@ -8,26 +8,49 @@ export function findBestMatchedVariant(
   selectedOptions: Record<string, string>,
   variants: InodeMediaVariant[],
 ) {
-  // Sắp xếp các variant theo mức độ khớp giảm dần
-  const sorted = [...variants].sort((a, b) => {
-    const aMatch = countMatch(a.node.selectedOptions, selectedOptions);
-    const bMatch = countMatch(b.node.selectedOptions, selectedOptions);
-    return bMatch - aMatch; // nhiều match hơn thì lên đầu
+  const customSelectedOptionsArr = variants.map((item) => {
+    return {
+      selectedOptions: item.node.selectedOptions,
+      id: item.node.id,
+    };
   });
+  let flag = -1;
+  for (let i = 0; i < customSelectedOptionsArr.length; i++) {
+    let cnt = 0;
+    const lengthOptions = customSelectedOptionsArr[i].selectedOptions.length;
+    for (let j = 0; j < lengthOptions; j++) {
+      if (
+        selectedOptions[customSelectedOptionsArr[i].selectedOptions[j].name] ===
+        customSelectedOptionsArr[i].selectedOptions[j].value
+      ) {
+        cnt++;
 
-  return sorted[0] || null;
-}
-
-function countMatch(
-  variantOptions: IselectOption[],
-  selectedOptions: Record<string, string>,
-) {
-  const customObject = {} as any;
-  variantOptions.map((item) => (customObject[item.name] = item.value));
-  return Object.entries(selectedOptions).reduce((count, [key, value]) => {
-    if (customObject[key] === value) {
-      return count + 1;
+        // selectedObject = customSelectedOptionsArr[i];
+      }
     }
-    return count;
-  }, 0);
+    console.log(cnt);
+    if (cnt == lengthOptions) {
+      flag = i;
+      break;
+    }
+  }
+  if (flag != -1) {
+    return variants[flag];
+  } else {
+    return null;
+  }
 }
+
+// function countMatch(
+//   variantOptions: IselectOption[],
+//   selectedOptions: Record<string, string>,
+// ) {
+//   const customObject = {} as any;
+//   variantOptions.map((item) => (customObject[item.name] = item.value));
+//   return Object.entries(selectedOptions).reduce((count, [key, value]) => {
+//     if (customObject[key] === value) {
+//       return count + 1;
+//     }
+//     return count;
+//   }, 0);
+// }

@@ -43,6 +43,7 @@ import {
   isNumber,
   isProductVariantGID,
 } from "app/helpers/validate";
+import NotFoundModal from "app/components/pages/products/modalNotFound";
 
 interface IoutputLoader {
   product: IproductDetail;
@@ -90,6 +91,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
           media(first: 10) {
             edges {
               node {
+                id
                 mediaContentType
                 alt
                 ... on MediaImage {
@@ -131,6 +133,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
                 media(first: 10) {
                   edges {
                     node {
+                      id
                       alt
                       mediaContentType
                       __typename
@@ -341,8 +344,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const quantity = formData.get(VARIANTS.QUANTITY);
     const quantityUpdate = formData.get(VARIANTS.UPDATE_QUANTITY);
     const price = formData.get(VARIANTS.PRICE);
-    // const locationId = formData.get(VARIANTS.LOCATION_ID);
-    const locationId = "gid://shopify/Locati/8233667";
+    const locationId = formData.get(VARIANTS.LOCATION_ID);
+    // const locationId = "gid://shopify/Locati/8233667";
     const inventoryItemId = formData.get(VARIANTS.INVENTORY_ITEM_ID);
     // const inventoryItemId = `gid://shopify/InventoryItem/48655853`;
     const isUpdatePrice = formData.get(VARIANTS.IS_UPDATE_PRICE);
@@ -612,6 +615,10 @@ export default function CardDefault() {
     isClickChangeVariant,
     setListVariants,
     listVariants,
+    setNotFoundVariant,
+    notFoundVariant,
+    preListVariants,
+    handleClickConvertPrevious,
   } = useProduct();
 
   useEffect(() => {
@@ -627,6 +634,11 @@ export default function CardDefault() {
     }
     const listVariant = _.isEmpty(listVariants) ? tmp : listVariants;
     const chooseVariant = findBestMatchedVariant(listVariant, edges);
+    if (!chooseVariant) {
+      setNotFoundVariant(true);
+      return;
+    }
+
     const combineWithCurrentcy: InodeMediaVariant = {
       currencyCode: shop.currencyCode,
       ...chooseVariant,
@@ -639,7 +651,7 @@ export default function CardDefault() {
         value: l.node.location.id,
       };
     });
-
+    setNotFoundVariant(false);
     handleSetOption(locationOptions);
     setPickedVarant(combineWithCurrentcy);
   }, [isClickChangeVariant]);
@@ -698,6 +710,7 @@ export default function CardDefault() {
     },
     [updatedVariant, err, pickedVariant],
   );
+
   useEffect(() => {
     if (pickedVariant) {
       setUpdateVariant({
@@ -743,7 +756,23 @@ export default function CardDefault() {
       method: "post",
     });
   }, [pickedVariant, updatedVariant]);
+  useEffect(() => {
+    if (notFoundVariant) {
+      shopify.toast.show("Product Variant is Not Found or Deleted", {
+        duration: 3000,
+        isError: true,
+      });
+      if (preListVariants) {
+        const timer = setTimeout(() => {
+          handleClickConvertPrevious(preListVariants);
+          setNotFoundVariant(false);
+        }, 300);
 
+        // Cleanup
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [notFoundVariant]);
   useEffect(() => {
     if (!pickedVariant) return;
     if (fetcher.state == "submitting") {
@@ -964,6 +993,7 @@ export default function CardDefault() {
         loading={loading}
         handleSubmitUpdate={handleSubmitUpdate}
       />
+      <NotFoundModal />
     </>
   );
 }
