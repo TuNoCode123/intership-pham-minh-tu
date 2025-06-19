@@ -1,0 +1,45 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "b8549bdf086b56124813bd24dbc67094"
+name = "Mini-Project-2"
+handle = "mini-project-2"
+application_url = "https://torture-mines-documented-jersey.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2025-04"
+
+  [[webhooks.subscriptions]]
+  topics = [ "orders/paid" ]
+  uri = "https://carter-trained-smooth-reflected.trycloudflare.com/webhooks/app/order_paid"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "https://carter-trained-smooth-reflected.trycloudflare.com/webhooks/app/scopes_update"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "https://carter-trained-smooth-reflected.trycloudflare.com/webhooks/app/uninstalled"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_customers,read_orders,write_checkouts,write_discounts,write_orders,write_products"
+
+[auth]
+redirect_urls = [
+  "https://torture-mines-documented-jersey.trycloudflare.com/auth/callback",
+  "https://torture-mines-documented-jersey.trycloudflare.com/auth/shopify/callback",
+  "https://torture-mines-documented-jersey.trycloudflare.com/api/auth/callback"
+]
+
+[app_proxy]
+url = "https://torture-mines-documented-jersey.trycloudflare.com/app"
+subpath = "app"
+prefix = "apps"
+
+[pos]
+embedded = false

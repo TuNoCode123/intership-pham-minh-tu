@@ -42,13 +42,6 @@ function SkeletonProductTable() {
               <SkeletonBodyText lines={1} />,
               <SkeletonBodyText lines={1} />,
             ],
-            [
-              <SkeletonThumbnail size="small" />,
-              <SkeletonBodyText lines={1} />,
-              <SkeletonBodyText lines={1} />,
-              <SkeletonBodyText lines={1} />,
-              <SkeletonBodyText lines={1} />,
-            ],
           ]}
         />
       </LegacyCard>

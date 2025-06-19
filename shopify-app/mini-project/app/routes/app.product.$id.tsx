@@ -17,6 +17,8 @@ import {
   Button,
   Text,
   Card,
+  Divider,
+  BlockStack,
 } from "@shopify/polaris";
 
 import { VARIANTS } from "app/constraints/variants";
@@ -30,7 +32,7 @@ import {
   IproductDetail,
   IuserErrors,
 } from "interfaces/product";
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import invariant from "tiny-invariant";
 import ModalUpdateProduct from "app/components/pages/products/modals";
 import _ from "lodash";
@@ -41,9 +43,7 @@ import {
   isInventoryItemGID,
   isLocationGID,
   isNumber,
-  isProductVariantGID,
 } from "app/helpers/validate";
-import NotFoundModal from "app/components/pages/products/modalNotFound";
 
 interface IoutputLoader {
   product: IproductDetail;
@@ -80,12 +80,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
         }
         product(id: $ownerId) {
           title
-          category {
-            id
-            fullName
-          }
           descriptionHtml
-          hasOnlyDefaultVariant
           totalInventory
           vendor
           media(first: 10) {
@@ -341,11 +336,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const productId = formData.get(VARIANTS.PRODUCT_ID);
     // const productId = "fkljdahsfkjhdsaj";
     const productVariantId = formData.get(VARIANTS.PRODUCT_VARIANT_ID);
+    // const productVariantId = "fdsafdsafdas";
     const quantity = formData.get(VARIANTS.QUANTITY);
+    // const quantity = "fdasfdasfdsafdas";
     const quantityUpdate = formData.get(VARIANTS.UPDATE_QUANTITY);
     const price = formData.get(VARIANTS.PRICE);
     const locationId = formData.get(VARIANTS.LOCATION_ID);
-    // const locationId = "gid://shopify/Locati/8233667";
+    // const locationId = "gid://shopify/Location/8233667";
     const inventoryItemId = formData.get(VARIANTS.INVENTORY_ITEM_ID);
     // const inventoryItemId = `gid://shopify/InventoryItem/48655853`;
     const isUpdatePrice = formData.get(VARIANTS.IS_UPDATE_PRICE);
@@ -448,18 +445,18 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         let LC = "";
         let EM: IuserErrors[] = [];
 
-        const userErrors = errorList.map(async (err) => {
-          const error = err.reason;
-          if (error instanceof Response) {
-            const errorBody = await error.json();
-            const { LC: locale, EM: message } = errorBody;
-            LC += locale;
-            EM = [...EM, ...message];
-          }
-        });
-        await Promise.all(userErrors);
-        console.log("lc", LC);
-        console.log("em", EM);
+        await Promise.all(
+          errorList.map(async (err) => {
+            const error = err.reason;
+            if (error instanceof Response) {
+              const errorBody = await error.json();
+              const { LC: locale, EM: message } = errorBody;
+              LC += locale;
+              EM = [...EM, ...message];
+            }
+          }),
+        );
+        // await Promise.all(userErrors);
 
         return json({
           type: [VARIANTS.ERROR],
@@ -953,10 +950,12 @@ export default function CardDefault() {
               <LegacyCard>
                 <InlineStack wrap={true} gap="500" align="start">
                   <LegacyCard.Section>
-                    <ImagesProduct
-                      product={product}
-                      pickedVariant={pickedVariant}
-                    />
+                    <Suspense fallback={<div>Đang tải...</div>}>
+                      <ImagesProduct
+                        product={product}
+                        pickedVariant={pickedVariant}
+                      />
+                    </Suspense>
                   </LegacyCard.Section>
                   <LegacyCard.Section>
                     <Box width="100%">
@@ -973,13 +972,20 @@ export default function CardDefault() {
             <Layout.Section variant="oneThird">
               <Card>
                 <Box>
-                  <Text variant="bodySm" as="p">
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: product.descriptionHtml,
-                      }}
-                    />
-                  </Text>
+                  <BlockStack gap={"200"}>
+                    <Text as="h1" variant="headingLg">
+                      Description
+                    </Text>
+                    <Divider />
+                    <Text variant="bodySm" as="p">
+                      <div
+                        style={{ fontSize: "16px", lineHeight: "24px" }}
+                        dangerouslySetInnerHTML={{
+                          __html: product.descriptionHtml,
+                        }}
+                      />
+                    </Text>
+                  </BlockStack>
                 </Box>
               </Card>
             </Layout.Section>
@@ -993,7 +999,6 @@ export default function CardDefault() {
         loading={loading}
         handleSubmitUpdate={handleSubmitUpdate}
       />
-      <NotFoundModal />
     </>
   );
 }

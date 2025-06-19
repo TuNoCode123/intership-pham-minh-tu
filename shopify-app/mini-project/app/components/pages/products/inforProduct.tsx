@@ -43,7 +43,17 @@ const InforProduct = ({
         </Box>
         <Box>
           <Text variant="bodyLg" as="h1">
-            <span style={{ fontSize: "30px" }}>{product.title}</span>
+            <span
+              style={{
+                fontSize: "26px",
+
+                display: "inline-block", // cần thiết nếu bạn muốn đặt width
+                maxWidth: "530px",
+                lineHeight: "30px",
+              }}
+            >
+              {product.title}
+            </span>
           </Text>
         </Box>
         <Box as="div">

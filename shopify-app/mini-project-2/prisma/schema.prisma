@@ -1,0 +1,221 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+}
+
+model Shop {
+  id   String   @id @unique @map("shopify_shop_id")
+  domain          String   @unique
+  name            String?
+  email           String?
+  accessToken     String
+  status          String   @default("installed")
+  customers         Customers[]       
+  pointToVouchers   PointToVoucher[]  
+  reviewAwards      ReviewAward[]    
+  customerRankings  CustomerRanking[] 
+  pointLog          Point_Logs[]      
+  reviews           Reviews[]
+  redeemed          Redeemed[]
+  orderNumber       OrderNumber[]
+  @@index([domain])
+  @@map("shops")
+}
+
+model Customers {
+  id        Int                 @id @default(autoincrement())
+  shopId       String         @map("shop_id")
+  shop            Shop        @relation(fields: [shopId], references: [id])
+  customerId    String          @unique
+  firstName     String
+  lastName      String
+  email         String
+  isDelete      Boolean       @default(false)          
+  redeemedCodes Redeemed[] @relation("CustomerToRedeemedCode")
+  total_point   Points?         @relation("CustomerToTotalPoint")
+  pointLogs     Point_Logs[]    @relation("PointLogstoCustomer")
+  created_at   DateTime   @default(now())
+  updated_at   DateTime?   
+  reviews       Reviews[]  @relation("Review_To_Customer")
+  orderNumber   OrderNumber[]  @relation("Order_To_Customer")
+  rankingId     Int            @default(1)
+  total_spent   Int            @default(0)
+  rank     CustomerRanking?  @relation("Ranking_To_Customer", fields: [rankingId], references: [id])
+  @@unique([shopId, email])
+}
+
+model Points {
+  id           Int         @id @default(autoincrement())
+  customerId   Int         @unique 
+  total_points Int         @default(0)
+  customer     Customers?  @relation("CustomerToTotalPoint", fields: [customerId], references: [id])
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @default(now())
+}
+model AllCodes{
+  key          String  @id
+  value        String  @unique
+  pointLogs    Point_Logs[] @relation("Point_LogsToAllCode")
+  sync_logs    sync_customers_logs[]  @relation("sync_customers_logsToAllCode")
+  created_at   DateTime   @default(now())
+}
+
+model Point_Logs{
+  id           Int     @id @default(autoincrement())
+  type         String  
+  reason       String?
+  created_at   DateTime @default(now())
+  allCode     AllCodes?  @relation("Point_LogsToAllCode", fields: [type], references: [key])
+  amount       Int      @default(0)
+  customerId   Int     
+  customer     Customers?  @relation(fields: [customerId], references: [id], name: "PointLogstoCustomer")
+  shopId       String         @map("shop_id")
+  shop            Shop         @relation(fields: [shopId], references: [id])
+}
+
+
+model Redeemed {
+  id           Int        @id @default(autoincrement())
+  shopId       String          @map("shop_id")
+  shop         Shop        @relation(fields: [shopId], references: [id])
+  codeId       Int             @unique
+  amount       Int
+  customerId   Int     
+  point_used   Int
+  customer     Customers?  @relation(fields: [customerId], references: [id], name: "CustomerToRedeemedCode")
+  exchangeId   Int       
+  exchange     PointToVoucher?  @relation(fields: [exchangeId], references: [id], name: "ExchangeToRedeemedCode")
+  created_at   DateTime   @default(now())
+  code         Code?  @relation(fields: [codeId], references: [id], name: "RedeemedToCode")
+}
+
+model Code{
+id     Int        @id @default(autoincrement())
+code   String     @unique
+isUsed Boolean    @default(false)
+status Boolean   @default(false)
+customerId   Int     
+created_at   DateTime   @default(now())
+redeemed   Redeemed?         @relation("RedeemedToCode")
+}
+
+// model Exchange{
+//    id           Int        @id @default(autoincrement())
+//    pointAmount  Int
+//    moneyAmount  Int
+//    redeemedCodes Redeemed_Code[] @relation("ExchangeToRedeemedCode")
+//    created_at   DateTime @default(now())
+//    type         String
+//    allCode     AllCodes?  @relation("ExchangeToAllCode", fields: [type], references: [key])
+//    condition   Int?       @default(0)    
+// }
+model MoneyToPoint{
+   id           Int        @id @default(autoincrement())
+   moneyAmount  Int
+   created_at   DateTime @default(now())
+   condition   Int?       @default(0)   
+   
+}
+model PointToVoucher{
+   id           Int        @id @default(autoincrement())
+   pointNumber  Int
+   moneyAmount  Int
+   redeemedCodes Redeemed[] @relation("ExchangeToRedeemedCode")
+   created_at   DateTime @default(now())
+   shopId       String          @map("shop_id")
+   shop            Shop         @relation(fields: [shopId], references: [id]) 
+}
+
+model Reviews {
+  id          Int      @id @default(autoincrement())
+  shopId       String          @map("shop_id")
+  shop            Shop        @relation(fields: [shopId], references: [id])
+  product_id  String  
+  customer_id Int
+  rating      Int
+  content     String
+  approved    Boolean  @default(false)
+  created_at  DateTime @default(now())
+  images      Reviews_Image[] @relation("Review_To_Image")
+  customers   Customers? @relation(fields: [customer_id], references: [id], name: "Review_To_Customer")
+  award       Int        @default(0)
+  @@index([product_id])
+}
+
+
+model Reviews_Image{
+     id          Int      @id @default(autoincrement())
+     reviewsId   Int    
+     image       String
+     imageId     String    @unique
+     reviews     Reviews? @relation(fields: [reviewsId], references: [id], name: "Review_To_Image")
+}
+
+  
+model ReviewAward{
+  shopId       String          @map("shop_id")
+  shop            Shop         @relation(fields: [shopId], references: [id])
+  id             Int      @id @default(autoincrement())
+  startNumber    Int
+  point          Int
+}
+
+
+model OrderNumber{
+  id              Int      @id @default(autoincrement())
+  shopId       String          @map("shop_id")
+  shop            Shop         @relation(fields: [shopId], references: [id])
+  productId       String   
+  customerId      Int
+  purchaseNumber  Int     @default(0)
+  customers   Customers? @relation(fields: [customerId], references: [id], name: "Order_To_Customer")
+  @@unique([customerId, productId])
+}
+
+model CustomerRanking{
+id              Int      @id @default(autoincrement())
+tierName         String  
+pointRate       Float
+min_spent       Int
+customers       Customers[] @relation("Ranking_To_Customer")
+created_at      DateTime @default(now())
+shopId       String          @map("shop_id")
+shop            Shop        @relation(fields: [shopId], references: [id])
+@@unique([shopId, tierName])
+}
+model sync_customers_logs{
+  id           Int        @id @default(autoincrement())
+  shopId       String          @map("shop_id")
+  customerId   String
+  state          String          
+  created_at   DateTime
+  allCode      AllCodes?       @relation(fields: [state], references: [key],name: "sync_customers_logsToAllCode")
+}

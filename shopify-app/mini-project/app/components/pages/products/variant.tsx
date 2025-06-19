@@ -132,9 +132,7 @@ const VariantProduct = ({ variants }: IvariantsProductProps) => {
   const keys = Object.keys(variants).sort((a, b) => a.localeCompare(b));
 
   const { listVariants } = useProduct();
-  // useEffect(() => {
-  //   console.log(variants);
-  // }, [variants]);
+  console.log("---------->", listVariants);
   return (
     <div>
       <BlockStack gap="300">

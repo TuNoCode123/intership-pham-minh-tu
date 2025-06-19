@@ -1,11 +1,12 @@
 import { BlockStack, Box, Button } from "@shopify/polaris";
 import { InodeMediaVariant, IproductDetail } from "interfaces/product";
-import "react-slideshow-image/dist/styles.css";
-import { Slide } from "react-slideshow-image";
 import FooterProductImage from "./footerImageProduct";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useProduct } from "app/hooks/useProduct";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 
+import "./style.css";
 const SlideItem = ({ src, alt }: { src: string; alt: string }) => {
   return (
     <div
@@ -18,13 +19,19 @@ const SlideItem = ({ src, alt }: { src: string; alt: string }) => {
         overflow: "hidden",
       }}
     >
+      {/* <InnerImageZoom
+        src={src}
+        zoomSrc={src}
+        zoomType="hover"
+        zoomPreload={true}
+        className="custom-zoom-image"
+      /> */}
       <img
         src={src}
         style={{
           width: "100%",
           height: "100%",
           objectFit: "contain",
-          borderRadius: "10px",
         }}
         alt={alt}
       />
@@ -50,7 +57,7 @@ const ImagesProduct = ({
   const goToSlide = (index: number): void => {
     const current = slideRef.current as any;
     if (current) {
-      current.goTo(index); // Chuyển đến slide theo index
+      current.slideTo(index); // Chuyển đến slide theo index
       setCurrentSlide(index); // Cập nhật trạng thái slide hiện tại
     }
   };
@@ -72,48 +79,40 @@ const ImagesProduct = ({
     <>
       <Box maxWidth="100%">
         <BlockStack>
-          <div style={{ width: "100%", maxWidth: "500px", height: "450px" }}>
-            <Slide
+          <div style={{ width: "100%", maxWidth: "500px", height: "420px" }}>
+            <Swiper
               ref={slideRef}
-              slidesToScroll={1}
-              slidesToShow={1}
-              indicators={true}
-              autoplay={false}
-              transitionDuration={500}
-              arrows={true}
-              onChange={(_oldIndex: number, newIndex: number) => {
-                setCurrentSlide(newIndex);
+              modules={[Navigation]}
+              navigation
+              // spaceBetween={50}
+              slidesPerView={1}
+              onSlideChange={(swiper) => {
+                slideRef.current = swiper as any;
+
+                setCurrentSlide(swiper.realIndex);
+
+                console.log("Current index:", swiper.realIndex);
               }}
-              responsive={[
-                {
-                  breakpoint: 800,
-                  settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                  },
-                },
-                {
-                  breakpoint: 500,
-                  settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                  },
-                },
-              ]}
+              autoplay={true}
+              // onSlideChange={() => console.log("slide change")}
+              // onSwiper={(swiper) => console.log(swiper)}
+              loop={true}
             >
               {listImage.map((item, index) => {
                 return (
                   <>
-                    <Box as="div" key={index} width="100%" minHeight="400px">
-                      <SlideItem
-                        src={item?.node?.image?.url}
-                        alt={item?.node?.alt || "Product Image"}
-                      />
-                    </Box>
+                    <SwiperSlide>
+                      <Box as="div" key={index} width="100%" minHeight="400px">
+                        <SlideItem
+                          src={item?.node?.image?.url}
+                          alt={item?.node?.alt || "Product Image"}
+                        />
+                      </Box>
+                    </SwiperSlide>
                   </>
                 );
               })}
-            </Slide>
+            </Swiper>
           </div>
 
           <FooterProductImage images={listImage} goToSlide={goToSlide} />

@@ -1,6 +1,5 @@
 import { ProductContext } from "app/contexts/productContext";
-import { IlistSelect } from "app/routes/app.product.$id";
-import { IselectOption } from "interfaces/product";
+
 import { useContext } from "react";
 
 export const useProduct = () => {

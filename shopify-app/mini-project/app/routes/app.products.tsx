@@ -133,6 +133,7 @@ export default function DataTableProduct() {
     navigation.state === "loading" &&
     navigation.formData === undefined &&
     navigation.location.pathname !== location.pathname;
+
   const { pageInfo } = products;
   const [searchParams, setSearchParams] = useSearchParams();
   const pageInfor = products.pageInfo;

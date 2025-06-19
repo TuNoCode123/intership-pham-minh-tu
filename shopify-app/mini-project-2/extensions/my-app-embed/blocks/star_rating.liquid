@@ -1,0 +1,179 @@
+
+{% if customer %}
+  <script>
+    window.customerInfo = {
+      loggedIn: true,
+      name: {{ customer.first_name | json }},
+      id:{{ customer.id | json }},
+      shopId:{{ shop.id | json }},
+      domain:{{ shop.domain | json }}
+    };
+  </script>
+{% else %}
+  <script>
+    window.customerInfo = {
+      loggedIn: false
+    };
+  </script>
+{% endif %}
+
+
+<link href="{{ 'app-embed.css' | asset_url }}" rel="stylesheet">
+<script src="{{ 'app-embed.js' | asset_url }}" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js" defer></script>
+
+
+ <div id="my-app-modal-root">
+  <!-- Nút mở modal -->
+  <button id="open-embed-modal-btn"
+    style="background-color: {{block.settings.button_color}};"
+    onmouseover="this.style.backgroundColor='#333';"
+    onmouseout="this.style.backgroundColor='{{block.settings.button_color}}';"
+  >
+    <span style="font-size: 24px; display: block; transform: translateY(-2px);"><i class="fa-solid fa-ticket"></i></span>
+    <span class="tooltip">Đổi voucher</span>
+    </button>
+  
+  <!-- Modal overlay -->
+  <div id="my-app-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.6); z-index: 9998; backdrop-filter: blur(2px);">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 24px; border-radius: 12px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto;">
+      
+      <div id="content-redeem">
+          <!-- Header -->
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h2 style="margin: 0; color: #333; font-size: 24px;">Đổi Điểm Lấy Thưởng</h2>
+        <button id="close-embed-modal-btn" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+      </div>
+
+      <h4 class="modal-history-title">Lịch sử đổi coupon</h4>
+         <!-- User  -->
+      
+         <div class="userInfor" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between;">
+          <div>
+            <div style="font-weight: 600; color: #555;">Xin chào, <span id="user-name"></span></div>
+            <div style="font-size: 14px; color: #777;">ID: <span id="user-id"></span></div>
+            <div style="font-size: 14px; color: #777;">Tổng tiền đã tiêu:  <span id="user-spent"></span></div>
+            <div style="font-size: 14px; color: #777;"><span id="user-ranking"></span></div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 14px; color: #555;">Điểm hiện có:</div>
+            <div id="user-point-ready" style="font-size: 24px; font-weight: 700; color: #4CAF50;"><span id="current-points">0</span> điểm</div>
+            <div id="user-points" style="font-size: 20px;font-weight: 700; color: #4CAF50;">...Loading</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Point List Container -->
+      <div id="point-list-container">
+        <h3 style="margin-top: 0; color: #444; font-size: 18px; padding-bottom: 10px; border-bottom: 1px solid #eee;">Chọn mức điểm để đổi</h3>
+        <div id="point-items-list" style="margin-top: 15px;"></div>
+      </div>
+      
+
+      </div>
+
+
+     <div id="content-history" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h2 style="margin: 0; color: #333; font-size: 24px;">Danh sách Voucher</h2>
+        <button id="close-embed-modal-btn" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+      </div>
+      <h4 class="modal-history-title redeem">Đổi điểm</h4>
+      <div class="stats-grid" id="statsGrid">
+           
+        </div>
+          {% comment %} select {% endcomment %}
+           <div style="display: flex; justify-content:end; align-items: center; margin-bottom: 20px; margin-top: 20px; gap: 10px;">
+             
+           
+           <div class="select-container">
+        <select class="custom-select" id="country-select">
+            <option value="none" selected>None</option>
+            <option value="desc">Mới nhất</option>
+            <option value="asc">Cũ nhất</option>
+        </select>
+       
+    </div>
+
+      
+           <div class="select-container">
+        <select class="custom-select" id="country-select-condition">
+            <option value="none" selected>None</option>
+            <option value="used">Đã dùng</option>
+            <option value="notUsed">Chưa dùng</option>
+            <option value="expired">Hết hạn</option>
+        </select>
+       
+    </div>
+           </div>
+     
+      <div id="voucherContainer" class="voucher-grid"></div>
+       <div class="pagination cursor-pagination" style="display: none;">
+  <!-- Previous button -->
+  <button class="pagination-item pagination-prev" disabled>
+    &lt;
+  </button>
+  
+  <!-- Page indicators (showing 3 at a time) -->
+  <div class="pagination-pages"></div>
+  
+  <!-- Next button -->
+  <button class="pagination-item pagination-next">
+    &gt;
+  </button>
+</div>
+  
+     </div>
+       <!-- Loading State -->
+      <div id="loading-state" style="display: none; text-align: center; padding: 20px;">
+        <div style="display: inline-block; width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 15px; color: #666;">Đang tải dữ liệu...</p>
+      </div>
+      
+      <!-- Error State -->
+      <div id="error-state" style="display: none; text-align: center; padding: 20px; color: #f44336;">
+        <p>Đã có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau.</p>
+        <button id="retry-btn" style="background: #4CAF50; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-top: 10px;">Thử lại</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Spinner toàn màn hình (ẩn ban đầu) -->
+<div class="fullscreen-spinner" id="fullscreenSpinner" style="display: none;">
+        <div class="spinner">
+          <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="20" r="18" fill="none" stroke="#f3f3f3" stroke-width="4"></circle>
+    <circle cx="20" cy="20" r="18" fill="none" stroke="#3498db" stroke-width="4" stroke-dasharray="30 100" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="1s" repeatCount="indefinite"/>
+    </circle>
+</svg>
+        </div>
+        <div class="loading-text">Đang thực hiện yêu cầu , vui lòng đợi ít giây!!!</div>
+    </div>
+
+
+
+
+{% schema %}
+{
+  "name": "App Embed Block",
+  "target":  "body",
+  "settings": [
+    { "type": "product", "id": "product", "label": "product", "autofill": true },
+    {  "type": "color",
+      "id": "button_color",
+      "label": "Màu nền nút",
+      "default": "#000" }
+  ]
+}
+{% endschema %}
+

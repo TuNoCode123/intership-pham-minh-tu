@@ -1,0 +1,674 @@
+#my-app-modal-root {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  z-index: 100;
+}
+.tooltip {
+  display: none;
+  position: absolute;
+  top: 100%; /* hiện ngay dưới */
+  left: 0;
+  background-color: black;
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+/* .container:hover .tooltip {
+  display: block;
+} */
+#open-embed-modal-btn {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9999;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#open-embed-modal-btn:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+#open-embed-modal-btn:hover .tooltip {
+  display: block;
+}
+#point-list-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  max-height: 280px;
+  overflow-y: auto;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.point-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9fafb;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+}
+
+.point-item:hover {
+  background-color: #f3f4f6;
+  transform: translateX(5px);
+}
+
+.point-label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 16px;
+}
+
+.point-value {
+  font-weight: 600;
+  color: #10b981;
+  font-size: 16px;
+}
+
+.point-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.point-button:hover {
+  background-color: #45a049;
+}
+
+.point-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#point-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#point-list-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+#point-list-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+#point-list-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.input-number-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-number {
+  width: 80px;
+  padding: 8px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.input-number:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.input-number:hover {
+  border-color: #b3b3b3;
+}
+
+.confirm-btn {
+  padding: 8px 12px;
+  background: linear-gradient(to right, #4a90e2, #6bb9f0);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(to right, #3a80d2, #5ca9e0);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.confirm-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ẩn mũi tên trong input number */
+/* .input-number::-webkit-inner-spin-button,
+.input-number::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input-number {
+  -moz-appearance: textfield; /* Firefox */
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(74, 144, 226, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+  }
+}
+.input-number:focus {
+  animation: pulse 1.5s infinite;
+}
+
+.cancel-btn {
+  padding: 8px 12px;
+  background: #ffffff;
+  color: #ff4d4f;
+  border: 2px solid #ffccc7;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.cancel-btn:hover {
+  background: #fff2f0; /* Nền đỏ nhạt khi hover */
+  border-color: #ffa39e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.cancel-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 77, 79, 0.2);
+}
+
+/* Lớp phủ toàn màn hình */
+.fullscreen-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+/* Spinner chính */
+.spinner {
+  width: 70px;
+  height: 70px;
+  border: 8px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #3498db;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+/* Văn bản loading */
+.loading-text {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Hiệu ứng quay */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Nội dung trang (chỉ để demo) */
+.content {
+  padding: 20px;
+  text-align: center;
+}
+
+/* Nút trigger (chỉ để demo) */
+.show-spinner-btn {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.modal-history-title {
+  margin: 0;
+  color: blue;
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* voucher */
+
+:root {
+  --primary: #4361ee;
+  --secondary: #3f37c9;
+  --accent: #4cc9f0;
+  --text: #2b2d42;
+  --text-light: #8d99ae;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --success: #4caf50;
+  --warning: #f72585;
+}
+.voucher-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.voucher-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.voucher-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.voucher-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary), var(--accent));
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.voucher-id {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  letter-spacing: 0.5px;
+}
+
+.voucher-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.card-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-light);
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.voucher-code-container {
+  position: relative;
+  margin-top: 1rem;
+}
+
+.voucher-code {
+  background: rgba(67, 97, 238, 0.05);
+  padding: 1rem;
+  border-radius: 12px;
+  font-family: "Fira Code", "Roboto Mono", monospace;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--text);
+  border: 1px dashed rgba(67, 97, 238, 0.3);
+  word-break: break-all;
+  transition: all 0.3s ease;
+}
+
+.voucher-code:hover {
+  background: rgba(67, 97, 238, 0.1);
+}
+
+.status-badge {
+  position: absolute;
+  top: -10px;
+  right: 1rem;
+  background: var(--success);
+  color: white;
+  padding: 0.25rem 1rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(76, 201, 240, 0.3);
+}
+
+.status-used {
+  background: var(--warning);
+  box-shadow: 0 4px 12px rgba(247, 37, 133, 0.3);
+}
+
+.copy-btn {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.voucher-code-container:hover .copy-btn {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 1.25rem;
+  }
+
+  .card-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* pagination */
+
+.cursor-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: Arial, sans-serif;
+  margin-top: 3rem;
+}
+
+.pagination-item {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.pagination-item:hover:not(:disabled) {
+  background: #f0f0f0;
+}
+
+.pagination-item.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-pages {
+  display: flex;
+  gap: 8px;
+}
+
+/* select */
+
+.select-container {
+  position: relative;
+  max-width: 300px;
+}
+
+.custom-select {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.custom-select:focus + .select-arrow {
+  color: #4a90e2;
+}
+
+.custom-select option {
+  padding: 10px;
+  background-color: #fff;
+  color: #333;
+}
+
+.custom-select option:hover {
+  background-color: #f0f7ff;
+}
+
+.custom-select option:checked {
+  background-color: #e6f0ff;
+  font-weight: 500;
+}
+
+.custom-select:hover {
+  border-color: #b3b3b3;
+}
+
+/* infor */
+.stats-container {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.stats-header {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2c3e50;
+}
+
+.stats-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.stat-card {
+  background-color: #f1f2f3;
+  border-radius: 8px;
+  padding: 6px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3498db;
+  margin: 10px 0;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #32c3d1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+.total-card {
+  grid-column: span 2;
+  background-color: #3498db;
+  color: white;
+}
+
+.total-card .stat-value {
+  color: white;
+}
+
+.total-card .stat-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.label-product {
+  position: absolute;
+  top: 0;
+  left: var(--cut-start);
+  padding: 0 10px;
+  background: white;
+  font-weight: bold;
+  transform: translateY(-50%);
+  z-index: 2;
+  color: #ff7e5f;
+  font-size: 14px;
+}
+
+.copy-text {
+  font-size: 1em;
+  color: #888;
+  margin-left: 4px;
+}
+.copy-text:hover {
+  color: #ff7e5f;
+  cursor: pointer;
+  text-decoration: underline;
+}

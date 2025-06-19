@@ -1,0 +1,186 @@
+<link href="{{ 'review-app.css' | asset_url }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js" defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="{{ 'review-app.js' | asset_url }}" defer></script>
+{% comment %} <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" defer></script> {% endcomment %}
+{% if product %}
+  <script>
+    window.productInfor = {
+      id: {{ product.id | json }},
+      customerId:{{ customer.id | json }},
+       domain:{{ shop.domain | json }}
+    };
+  </script>
+{% else %}
+  <script>
+    window.productInfor = {
+    };
+  </script>
+{% endif %}
+
+
+
+<div style="width: 100%;min-width:1200px">
+<div style="max-width: 50%;" >
+<div class="card-overview"  style="margin-top: 50px;">
+<h3><strong>Tổng quan</strong></h3>
+<div class="rating-summary">
+    <div class="average-rating">
+        <span class="score">4.6</span>
+        <div class="stars large" style="font-size: 24px;">
+            </div>
+    </div>
+    <div class="total-reviews">(43 đánh giá)</div>
+
+    <div class="individual-ratings">
+        <div class="rating-row">
+            <div class="stars"></div> <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 76.7%;"></div> </div>
+            <span class="count">33</span>
+        </div>
+        </div>
+</div>
+</div>
+</div>
+<h1>Review</h1>
+<div style="display: flex;align-items:start;gap:50px;margin-bottom: 20px; max-width: 100%;width:100%">
+<div style="max-width: 50%;width:100%;">
+<h2  id="number-order"></h2>
+<div id="product-evaluate" style="max-width: 600px;width:100%;display:none">
+<div class="label-product" style="font-size: 25px;">Cảm nhận của bạn về sản phẩm này?</div> 
+<div style="margin-bottom: 10px;">
+  </div>
+
+<span style="font-weight: 600;">Chọn sao mà bạn muốn!</span>
+<div style="display: flex;gap:30px;align-items: center;">
+<div class="custom-star-rating" style="display: flex; align-items: start;flex-direction: column; gap: 10px;">
+  <!-- Hiển thị sao -->
+  <div class="stars">
+    {% for i in (1..5) %}
+      <span style="font-size: 35px;" class="star" data-rating="{{ i }}">★</span>
+    {% endfor %}
+  </div>
+
+ 
+</div>
+<div id="text-mapping" style="font-weight: 600;"></div>
+</div>
+ <!-- Image Upload Section -->
+    <div class="image-upload-section">
+      <label>Đăng ảnh:</label>
+      <div class="image-preview-container" id="image-preview">
+      </div>
+      
+      <div class="upload-controls">
+        <input type="file" id="image-upload" accept="image/*" multiple style="display: none;">
+        <button type="button" id="add-images-btn" class="btn-add-images">
+          <i class="fas fa-plus"></i> Thêm ảnh
+        </button>
+        <span class="file-info" id="file-info">không ảnh nào được chọn!</span>
+      </div>
+    </div>
+<div class="container-textarea">
+        <label for="myTextarea" class="text-area-label">Nhập nội dung của bạn:</label>
+        <textarea 
+            id="myTextarea" 
+            class="beautiful-textarea" 
+            placeholder="Hãy viết review về sản phẩm này..."></textarea>
+</div>
+<div style="display: flex; justify-content:end">
+<button class="btn">Gửi</button>
+</div>
+</div>
+</div>
+</div>
+
+<div style="display: flex; justify-content:end">
+<div class="select-container-review" >
+        <select class="custom-select-review" id="country-select-review">
+            <option value="none" selected>None</option>
+            <option value="desc">Mới nhất</option>
+            <option value="asc">Cũ nhất</option>
+            
+        </select>
+
+        <select class="custom-select-review" id="country-select-review-rating">
+           <option value="none" selected>None</option>
+            <option value="rating-1">1 ⭐</option>
+            <option value="rating-2">2 ⭐</option>
+            <option value="rating-3">3 ⭐</option>
+            <option value="rating-4">4 ⭐</option>
+            <option value="rating-5">5 ⭐</option>
+            <option value="review-noImage">Không hình ảnh</option>
+            <option value="review-image">Có hình ảnh</option>
+        </select>
+</div>
+</div>
+<div style="display: flex; justify-content:center; align-items: center; height:300px" id="message-review">
+  <h2>Không có review nào!</h2>
+</div>
+<div id="list-container" style="display: flex; flex-direction: column; gap:10px">
+</div>
+ <div class="pagination">
+        <div class="arrow left disabled" id="prev-page">
+          {% comment %} <i class="fa-solid fa-arrow-left"></i> {% endcomment %}
+        </div>
+        <div class="page-info">Trang <span id="current-page">1</span>/<span id="total-pages">5</span></div>
+        <div class="arrow right" id="next-page">
+          {% comment %} <i class="fa-solid fa-arrow-right"></i> {% endcomment %}
+        </div>
+  </div>
+ <!-- Loading State -->
+<div id="loading-state-review" style="display: none; text-align: center; padding: 20px;">
+        <div style="display: inline-block; width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 15px; color: #666;">Đang tải dữ liệu...</p>
+</div>
+      
+</div>
+
+{% comment %} <div id="container-reviews" style="display: flex; justify-content: center; align-items: start; flex-direction: column; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+  <div id="customer-reviews">
+    <div class="customer-avatar">
+      <i class="fa-solid fa-user-tie"></i>
+    </div>
+    <div class="customer-infor" style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start; margin-left: 10px;">
+      <div id="customer-name"></div>
+      <div id="customer-date"></div>
+    </div>
+  </div>
+  <div id="content-reviews" style="width: 70%;">
+    <div id="star-reviews"></div>
+    <div id="text-reviews"></div>
+    <div id="review-images"></div>
+    <div id="images-reviews"></div>
+    <div id="date-reviews"></div>
+  </div>
+</div>
+  {% endcomment %}
+
+
+{% schema %}
+{
+  "name": "REVIEWS PRODUCT",
+  "target": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_data",
+      "label": "Hiển thị data?",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "api_endpoint",
+      "label": "Custom API Endpoint",
+      "default": "https://jsonplaceholder.typicode.com/posts"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Color",
+      "default": "#000000"
+    }
+  ]
+}
+{% endschema %}
